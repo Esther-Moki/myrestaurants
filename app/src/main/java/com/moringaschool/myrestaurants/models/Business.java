@@ -15,31 +15,31 @@ public class Business {
 
     @SerializedName("rating")
     @Expose
-    private Double rating;
+    public Double rating;
     @SerializedName("price")
     @Expose
-    private String price;
+    public String price;
     @SerializedName("phone")
     @Expose
-    private String phone;
+    public String phone;
     @SerializedName("id")
     @Expose
-    private String id;
+    public String id;
     @SerializedName("alias")
     @Expose
-    private String alias;
+    public String alias;
     @SerializedName("is_closed")
     @Expose
-    private Boolean isClosed;
+    public Boolean isClosed;
     @SerializedName("categories")
     @Expose
-    private List<Category> categories = null;
+    public List<Category> categories = null;
     @SerializedName("review_count")
     @Expose
-    private Integer reviewCount;
+    public Integer reviewCount;
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
     @SerializedName("url")
     @Expose
     private String url;
@@ -51,13 +51,14 @@ public class Business {
     private String imageUrl;
     @SerializedName("location")
     @Expose
-    private Location location;
+    public Location location;
     @SerializedName("distance")
     @Expose
-    private Double distance;
+    public Double distance;
     @SerializedName("transactions")
     @Expose
-    private List<String> transactions = null;
+    public List<String> transactions = null;
+    public String pushId;
 
     /**
      * No args constructor for use in serialization
@@ -223,4 +224,11 @@ public class Business {
         this.transactions = transactions;
     }
 
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
+    }
 }

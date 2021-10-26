@@ -11,7 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.moringaschool.myrestaurants.Constants;
 import com.moringaschool.myrestaurants.R;
 import com.moringaschool.myrestaurants.models.Business;
 import com.moringaschool.myrestaurants.models.Category;
@@ -52,14 +58,7 @@ public class RestaurantDetailFragment extends Fragment  implements View.OnClickL
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RestaurantDetailFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static RestaurantDetailFragment newInstance(Business restaurant) {
         RestaurantDetailFragment restaurantDetailFragment = new RestaurantDetailFragment();
@@ -100,7 +99,7 @@ public class RestaurantDetailFragment extends Fragment  implements View.OnClickL
         mPhoneLabel.setOnClickListener(this);
         mAddressLabel.setOnClickListener(this);
 
-
+        mSaveRestaurantButton.setOnClickListener(this);
         return view;
 
        // return inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
@@ -123,6 +122,25 @@ public class RestaurantDetailFragment extends Fragment  implements View.OnClickL
                                 + "," + mRestaurant.getCoordinates().getLongitude()
                                 + "?q=(" + mRestaurant.getName() + ")"));
                 startActivity(mapIntent);
+            }
+
+            if (v == mSaveRestaurantButton) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getUid();
+
+                DatabaseReference restaurantRef = FirebaseDatabase
+                        .getInstance()
+                        .getReference(Constants.FIREBASE_CHILD_RESTAURANTS)
+                        .child(uid);
+
+                DatabaseReference pushRef = restaurantRef.push();
+                String pushId = pushRef.getKey();
+                mRestaurant.setPushId(pushId);
+                pushRef.setValue(mRestaurant);
+
+
+              // restaurantRef.push().setValue(mRestaurant);
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
             }
         }
 }
